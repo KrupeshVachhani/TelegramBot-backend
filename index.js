@@ -13,7 +13,7 @@ const messageQueue = [];
 
 // Event listener to handle incoming messages
 bot.on("message", async (msg) => {
-console.log("Received message:", msg);
+// console.log("Received message:", msg);
 const chatId = msg.chat.id;
 const messageText = msg.text;
 
@@ -50,7 +50,7 @@ const vm = new VM({
 
 // Check if the message is a command
 if (!messageText.startsWith("/")) {
-    console.log("Executing JavaScript code:", messageText);
+    // console.log("Executing JavaScript code:", messageText);
     try {
     // Execute the JavaScript code with a timeout
     const executionPromise = new Promise((resolve, reject) => {
@@ -113,7 +113,7 @@ if (!messageText.startsWith("/")) {
 // Remove old messages from the server every 10 seconds
 setInterval(() => {
 messageQueue.length = 0;
-console.log("Old messages removed from the server.");
+// console.log("Old messages removed from the server.");
 }, 100000);
 
 console.log("Bot is running...");
