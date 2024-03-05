@@ -3,10 +3,10 @@ const { VM } = require("vm2");
 require("dotenv").config();
 const gemini = require("@google/generative-ai");
 const express = require("express");
-const fetch = require("node-fetch");
 
 // Initialize Express app
 const app = express();
+const fetchPromise = import("node-fetch"); // Use dynamic import
 const PORT = 3000;
 
 // Your Telegram Bot Token
@@ -15,7 +15,6 @@ const genAI = new gemini.GoogleGenerativeAI(process.env.API_KEY);
 
 // Create a new bot instance
 const bot = new TelegramBot(token, { polling: true });
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
 // Queue to process messages sequentially
 const messageQueue = [];
