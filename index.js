@@ -89,7 +89,7 @@ async function processQueue() {
       case "start":
         bot.sendMessage(
           chatId,
-          `Welcome to the Bot!\n\nYou can execute JavaScript code by typing it directly here. You can use the following commands:\n\n/help - Any kind of help from developer\n/demo - See a demonstration\n/gemini - Any kind of generating code for help or for any explanation\n\nHave fun coding!\n\nPlease note: This bot is still in development mode. You might face errors or uneven arrangement of outputs. Output line numbers are provided to help you identify the correct answer.`
+          `Welcome to the Bot!\n\nYou can execute JavaScript code by typing it directly here. You can use the following commands:\n\n/help - Any kind of help \n/demo - See a demonstration\n/gemini - Any kind of generating code for help or for any explanation\n\nHave fun coding!\n\nPlease note: This bot is still in development mode. You might face errors or uneven arrangement of outputs. Output line numbers are provided to help you identify the correct answer.`
         );
         break;
       case "demo":
