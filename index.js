@@ -1,11 +1,17 @@
 const TelegramBot = require("node-telegram-bot-api");
 const { VM } = require("vm2");
 require("dotenv").config();
-const gemini = require("@google/generative-ai"); // Import the Gemini API module
+const gemini = require("@google/generative-ai");
+const express = require("express");
+const fetch = require("node-fetch");
+
+// Initialize Express app
+const app = express();
+const PORT = 3000;
 
 // Your Telegram Bot Token
-const token = process.env.TOKEN; // Replace with your own bot token
-const genAI = new gemini.GoogleGenerativeAI(process.env.API_KEY); // Use 'gemini' instead of 'GoogleGenerativeAI'
+const token = process.env.TOKEN;
+const genAI = new gemini.GoogleGenerativeAI(process.env.API_KEY);
 
 // Create a new bot instance
 const bot = new TelegramBot(token, { polling: true });
@@ -14,9 +20,6 @@ const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 // Queue to process messages sequentially
 const messageQueue = [];
 
-// Import 'node-fetch' dynamically
-const fetchPromise = import("node-fetch");
-
 // Function to process the message queue sequentially
 async function processQueue() {
   const message = messageQueue[0];
@@ -24,8 +27,6 @@ async function processQueue() {
 
   const chatId = message.chatId;
   const messageText = message.messageText;
-
-  const fetch = await fetchPromise;
 
   const vm = new VM({
     sandbox: {
@@ -43,7 +44,7 @@ async function processQueue() {
           bot.sendMessage(chatId, `Output ${lineNumber}: ${cleanedMessage}`);
         },
       },
-      fetch: fetch.default, // Provide access to fetch inside the sandbox
+      fetch: fetch, // Provide access to fetch inside the sandbox
     },
   });
 
@@ -166,19 +167,9 @@ setInterval(() => {
   messageQueue.length = 0;
 }, 10000);
 
+// Start Express app
+app.listen(PORT, () => {
+  console.log(`Express app is listening on port ${PORT}`);
+});
+
 console.log("Bot is running...");
-
-// Extract code from the message
-//   const codeToExplain = messageText.split("\n").slice(1).join("\n");
-//   // Send API request to Gemini to explain and correct the code
-//   const geminiResponse = await gemini.explainAndCorrectCode(
-//     codeToExplain
-//   );
-//   const { explanation, correctedCode } = geminiResponse; // Extract response
-//   bot.sendMessage(chatId, explanation);
-//   bot.sendMessage(chatId, `Corrected code:\n${correctedCode}`);
-// } else {
-//   bot.sendMessage(chatId, "Unknown command");
-// }
-
-// const { GoogleGenerativeAI } = require("@google/generative-ai");
